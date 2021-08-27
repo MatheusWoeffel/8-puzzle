@@ -1,6 +1,7 @@
 import math
 from src.nodo import Nodo
 from src.fronteiras import Fronteira, FilaFronteira, PilhaFronteira
+import unittest
 
 PUZZLE_SIZE = 3 # 3x3
 PUZZLE_GOAL = '12345678_'
@@ -66,6 +67,27 @@ def bfs(estado=''):
 def dfs(estado=''):
   return buscar(estado, PilhaFronteira)
 
+
+class GraphSearchMethods(unittest.TestCase):
+  def test_simple(self):
+    self.assertEqual(['direita'], dfs('1234567_8'))
+    self.assertEqual(['direita'], bfs('1234567_8'))
+
+  def test_no_solution(self):
+    self.assertEqual(None, bfs('185423_67'))
+    self.assertEqual(None, dfs('185423_67'))
+
+  def test_intermediate_solution_bfs(self):
+    self.assertEqual(['abaixo', 'abaixo', 'direita', 'direita'], bfs('_23156478'))
+
+  def test_intermediate_solution_dfs(self):
+    self.assertEqual(['esquerda', 'esquerda', 'abaixo', 'direita', 'direita', 
+    'acima', 'esquerda', 'esquerda', 'abaixo', 'direita', 'direita', 'acima', 
+    'esquerda', 'esquerda', 'abaixo', 'direita', 'direita', 'acima', 'esquerda', 
+    'esquerda', 'abaixo', 'direita', 'direita', 'acima', 'esquerda', 'esquerda', 
+    'abaixo', 'direita', 'direita'], dfs('12345_786'))
+    
+  
 #pai = Nodo('2_3541687')
 
 #print(pai)
@@ -81,11 +103,14 @@ def dfs(estado=''):
 # ['abaixo', 'abaixo', 'direita', 'direita']
 #print(bfs('_23156478'))
 # print(dfs('_23156478'))
-print(dfs('12345_786'))
-print(dfs('1234567_8'))
+# print(dfs('12345_786'))
+# print(dfs('1234567_8'))
 
 #print(sucessor('12345_786'))
 # Retorna None
 #print(bfs('185423_67'))
 # print(dfs('185423_67'))
+
+if __name__ == "__main__":
+  unittest.main()
 
