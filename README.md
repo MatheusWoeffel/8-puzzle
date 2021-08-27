@@ -1,1 +1,1 @@
-# a-star
+# 8-puzzle
