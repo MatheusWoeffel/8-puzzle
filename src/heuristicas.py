@@ -1,11 +1,10 @@
-from nodo import Nodo
 import unittest
 
-OBJETIVO="12345678_"
+PUZZLE_GOAL="12345678_"
 
 def distancia_de_hamming(estado):
     lista_de_pecas_estado = [*estado]
-    lista_de_pecas_objetivo = [*OBJETIVO]
+    lista_de_pecas_objetivo = [*PUZZLE_GOAL]
 
     distance = 0
     for (peca, peca_objetivo) in zip(lista_de_pecas_estado, lista_de_pecas_objetivo):

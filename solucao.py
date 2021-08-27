@@ -2,8 +2,8 @@ import math
 from src.nodo import Nodo
 from src.fronteiras import Fronteira, FilaFronteira, HeapFronteira, PilhaFronteira
 from src.heuristicas import distancia_de_hamming
-
 import unittest
+
 
 PUZZLE_SIZE = 3 # 3x3
 PUZZLE_GOAL = '12345678_'
