@@ -41,12 +41,11 @@ def expande(pai = None):
   return [Nodo(sucessor[1], pai, sucessor[0]) for sucessor in sucessor(pai.estado)]
 
 
-def buscar(estado='', f=Fronteira):
-  if not issubclass(f, Fronteira):
+def buscar(estado='', fronteira=Fronteira):
+  if not issubclass(type(fronteira), Fronteira):
     raise TypeError('Implementação de fronteira não extende classe base Fronteira')
   
   expandidos = set()
-  fronteira = f()
   fronteira.adicionar(Nodo(estado))
   
   while (len(fronteira) > 0):
@@ -62,10 +61,13 @@ def buscar(estado='', f=Fronteira):
 
   
 def bfs(estado=''):
-  return buscar(estado, FilaFronteira)
+  return buscar(estado, FilaFronteira())
 
 def dfs(estado=''):
-  return buscar(estado, PilhaFronteira)
+  return buscar(estado, PilhaFronteira())
+
+def astar_hamming(estado=''):
+  return buscar(estado, )
 
 
 class GraphSearchMethods(unittest.TestCase):
