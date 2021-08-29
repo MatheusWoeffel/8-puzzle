@@ -1,4 +1,5 @@
 import math
+import time
 from src.nodo import Nodo
 from src.fronteiras import Fronteira, FilaFronteira, HeapFronteira, PilhaFronteira
 from src.heuristicas import distancia_de_hamming, distancia_de_manhattan
@@ -53,26 +54,26 @@ def buscar(estado='', fronteira=Fronteira):
   while (len(fronteira) > 0):
     v = fronteira.remover()
     if v.estado == PUZZLE_GOAL:
-      return v.tracar_caminho()
+      return (v.tracar_caminho(), len(expandidos))
     if v.estado not in expandidos:
       expandidos.add(v.estado)
       for nodo in expande(v):
         fronteira.adicionar(nodo)
   
-  return None
+  return (None, len(expandidos))
 
   
 def bfs(estado=''):
-  return buscar(estado, FilaFronteira())
+  return buscar(estado, FilaFronteira())[0]
 
 def dfs(estado=''):
-  return buscar(estado, PilhaFronteira())
+  return buscar(estado, PilhaFronteira())[0]
 
 def astar_hamming(estado=''):
-  return buscar(estado, HeapFronteira(distancia_de_hamming))
+  return buscar(estado, HeapFronteira(distancia_de_hamming))[0]
 
 def astar_manhattan(estado=''):
-  return buscar(estado, HeapFronteira(distancia_de_manhattan))
+  return buscar(estado, HeapFronteira(distancia_de_manhattan))[0]
 
 
 class GraphSearchMethods(unittest.TestCase):
@@ -102,31 +103,32 @@ class GraphSearchMethods(unittest.TestCase):
     self.assertEqual(['abaixo'], bfs('12345_786'))
     self.assertEqual(['abaixo'], astar_hamming('12345_786'))
     self.assertEqual(['abaixo'], astar_manhattan('12345_786'))
+   
     
+def avaliar_busca(estado='', fronteira=Fronteira, nome=''):
+  inicio = time.time()
+  caminho, n_expandidos = buscar(estado,fronteira)
+  fim = time.time()
   
-#pai = Nodo('2_3541687')
+  tempo_total = (fim - inicio) * 1000
+  
+  if (nome == ''):
+    nome = type(fronteira).__name__
+  
+  print('\nResultados para busca ' + nome + ':')
+  print(' - Tempo de execucao: ' + str(tempo_total) + ' ms')
+  print(' - Numero de nos expandidos: ' + str(n_expandidos))
+  print(' - Custo do caminho: ' + str(len(caminho)))
+  
 
-#print(pai)
-#print('-------')
-#for nodo in expande(pai):
-#    print(nodo)
-#print('-------')
-#print(bfs('2_3541687'))
-#print(bfs('_23156478'))
-#print(bfs('2_3541687'))
-#print(sucessor('123456_78'))
+def gerar_relatorio(estado=''):
+  avaliar_busca(estado, FilaFronteira(), 'BFS')
+  avaliar_busca(estado, PilhaFronteira(), 'DFS')
+  avaliar_busca(estado, HeapFronteira(distancia_de_hamming), 'A* com Distancia de Hamming')
+  avaliar_busca(estado, HeapFronteira(distancia_de_manhattan), 'A* com Distancia de Manhattan')
 
-# ['abaixo', 'abaixo', 'direita', 'direita']
-#print(bfs('_23156478'))
-# print(dfs('_23156478'))
-# print(dfs('12345_786'))
-# print(dfs('1234567_8'))
-
-#print(sucessor('12345_786'))
-# Retorna None
-#print(bfs('185423_67'))
-# print(dfs('185423_67'))
 
 if __name__ == "__main__":
-  unittest.main()
+  #unittest.main()
+  gerar_relatorio('2_3541687')
 
